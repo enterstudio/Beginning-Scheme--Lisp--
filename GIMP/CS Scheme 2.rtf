@@ -1,0 +1,423 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf230
+{\fonttbl\f0\fnil\fcharset0 Calibri;\f1\fmodern\fcharset0 CourierNewPS-BoldMT;\f2\fmodern\fcharset0 CourierNewPSMT;
+\f3\fswiss\fcharset0 Helvetica;\f4\fnil\fcharset0 Cambria;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\margb1800\margt1800\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa100\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+Problem Set 2:
+\b0 \expnd0\expndtw0\kerning0
+ 
+\b \expnd0\expndtw0\kerning0
+Conditionals and Repetition
+\f1\fs22 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 1>\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0\fs22 \cf0 \expnd0\expndtw0\kerning0
+\
+(define cnames-much-bluer\
+  (lambda (color-names)\
+    (let* ((rgbcolors (map cname->rgb color-names))\
+           (bluer (map rgb-bluer rgbcolors))\
+           (2bluer (map rgb-bluer bluer)))\
+      (map rgb->cname 2bluer))))\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+(cnames-much-bluer (list "red" "blue" "green" "black" "white" "grey"\
+                         "brown" "spicy pink" "neon avocado" "neon blue"))\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;; TIME : 20 minutes (was eating)\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 2>
+\fs22 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0 \cf0 \expnd0\expndtw0\kerning0
+;;; Procedure:\
+;;;   cnames-much-bluer\
+;;; Parameters:\
+;;;   color-names, a list\
+;;; Purpose:\
+;;;   To compute new colors from the given list of color names.\
+;;;   These new colors are created by applying rgb-bluer to the list of colors twice\
+;;; Produces:\
+;;;   bluercolors, a list\
+;;; Preconditions:\
+;;;   color-names must be valid color names. color-names must be a subset of (context-list-colors)  \
+;;; Postconditions:\
+;;;   bluercolors is a list of valid colors\
+;;;   bluercolors contains elements which have been created by transforming them using rgb-bluer twice and then converting the result to a cname\
+;;;   the blue component of every color in bluercolors is 64 more than its counterpart in color-names (subject to a maximum of 255)\
+;;; Problems:\
+;;;   The procedure will not work for colors with blue component within the range of 64 from the edges (0 and 255)\
+;;;   The procedure does not work uniformly across all colors. This is because all the possible rgb-values do not have corresponding color names. Thus, sometimes the color name ;;;   is obtianed by rounding up and sometimes by rounding down\
+\
+;; TIME : 10 minutes\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 3>
+\fs22 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0 \cf0 \expnd0\expndtw0\kerning0
+\
+(define canvas (image-new 100 100))\
+\
+(image-compute-pixels!\
+ canvas 0 0 (- (image-width canvas) 1) (- (image-height canvas) 1)\
+ (lambda (pos)\
+   (cond\
+     \
+     ((>= 25 (+ (square (- (position-col pos) 20)) (square (- (position-row pos) 50))))\
+      color-black)\
+     \
+     ((>= 900 (+ (square (- (position-col pos) 50)) (square (- (position-row pos) 50))))\
+      (let ((c (* 4 (sqrt (+ (square (- (position-col pos) 60))\
+                             (square (- (position-row pos) 60)))))))\
+        (rgb-new c 0 c)))\
+     \
+     ((>= 1600 (+ (square (- (position-col pos) 30)) (square (- (position-row pos) 40))))\
+      (rgb-new (+ 128 (* 255 (sin (* (/ pi 60) (position-row pos)))))\
+               0 \
+               (+ 128 (* -255 (cos (* (/ pi 60) (position-row pos)))))))\
+     \
+     ((zero? (random 100))\
+      color-white)\
+     \
+     (else\
+      color-black)\
+     )\
+   )\
+ )\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+(image-show canvas)\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;; TIME : 25 minutes\
+\
+\
+\
+\
+\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 4>
+\fs22 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0 \cf0 \expnd0\expndtw0\kerning0
+\
+(define remove-element-once \
+  (lambda (elemnt lst) \
+    (if (equal? elemnt (car lst)) \
+        (cdr lst) \
+        (cons (car lst) (remove-element-once elemnt (cdr lst))))))\
+\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+(define numlst (list '23 '34 '12 '12 '12 '1 '2 '12))\
+(remove-element-once '12 numlst)\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;; TIME : 10 minutes\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 5>\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0\fs22 \cf0 \expnd0\expndtw0\kerning0
+\
+;;; Procedure:\
+;;;   remove-element-once\
+;;; Parameters:\
+;;;   lst, a list\
+;;;   elemnt, an element that is part of lst\
+;;; Purpose:\
+;;;   To remove the first instance of an element (elemnt) from the list 'lst'\
+;;; Produces:\
+;;;   newlist, a list without the first instance of elemnt\
+;;; Preconditions:\
+;;;   lst must be a list\
+;;;   lst must not be null\
+;;;   (car lst) must not be null\
+;;;   elemnt must be a subset of lst and occur at least once in lst\
+;;;   elemnt must not be null\
+;;; Postconditions:\
+;;;   newlist is a list\
+;;;   length of newlist is shorter than lst by one element\
+\
+;; TIME : 10 minutes\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 6>\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0\fs22 \cf0 \expnd0\expndtw0\kerning0
+\
+(define element-of?\
+  (lambda (element alist)\
+    (if (null? alist)\
+        #f\
+        (if (equal? (car alist) element)\
+            #t\
+            (element-of? element (cdr alist))\
+            )\
+        )\
+    )\
+  )\
+\
+(define remove-element-once-check \
+  (lambda (elemnt lst)\
+    (cond ((not (list? lst))\
+           (throw "Please enter a valid list as the second parameter, received: " lst))\
+          ((null? (car lst))\
+           (throw "Please enter a list with some values, as the second parameter, received: " lst))\
+          ((null? elemnt)\
+           (throw "Please enter a value as the first parameter, received: " elemnt))\
+          ((not (element-of? elemnt lst))\
+           (throw "Please enter a first parameter that is part of the list in the second parameter, received: " elemnt))\
+          \
+          (else\
+           (remove-element-once-kernel elemnt lst)))))\
+\
+(define remove-element-once-kernel \
+  (lambda (elemnt lst)\
+    (if (equal? elemnt (car lst))\
+        (cdr lst) \
+        (cons (car lst) (remove-element-once-kernel elemnt (cdr lst))))))\
+\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+(define numlst1 (list 23 34 12 12 12 1 2 12))\
+(remove-element-once-check 12 numlst1)\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;; TIME : 85 minutes\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 7>\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0\fs22 \cf0 \expnd0\expndtw0\kerning0
+\
+(define my-reverse\
+  (lambda (lst)\
+    (letrec ((reverser (lambda (first rest)\
+                         (if (null? rest)\
+                             first\
+                             \
+                             (reverser\
+                              (cons (car rest) first) (cdr rest))\
+                             ))))\
+      (reverser null lst)\
+      )\
+    )\
+  )\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+\
+(my-reverse (list 1 2 3 4 5))\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;; TIME : 105 minutes (took me a long long time to figure out without append... took a break in between..)\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 8>\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0\fs22 \cf0 \expnd0\expndtw0\kerning0
+\
+;; a)\
+\
+(define all?\
+  (lambda (pred? lst)\
+    (or (null? lst)\
+        (and (pred? (car lst))\
+             (all? pred? (cdr lst))))))\
+\
+;; b)\
+\
+(define any?\
+  (lambda (pred? lst)\
+    (and (not (null? lst))\
+         (or (pred? (car lst))\
+             (any? pred? (cdr lst))))))\
+\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+(all? number? (list  1 2 3 4 5 'i))\
+\
+(any? number? (list  'u 'y 7 'i 'h))\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;; TIME : 5 minutes\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 9>\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0\fs22 \cf0 \expnd0\expndtw0\kerning0
+\
+(define procmap\
+  (lambda (proclist value)\
+    (if (null? proclist)\
+        null\
+        (cons ((car proclist) value) (procmap (cdr proclist) value))\
+        )\
+    )\
+  )\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+(procmap (list + -) 3)\
+\
+(procmap (list (lambda (x) x) rgb->string rgb->cname) (rgb-new 255 0 0))\
+\
+(procmap (list rgb-lighter rgb-darker rgb-complement rgb-rotate) (rgb-new 255 128 64))\
+\
+(map rgb->string (procmap (list rgb-lighter rgb-darker rgb-complement rgb-rotate)\
+                          (rgb-new 255 128 64)))\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;; TIME : 10 minutes\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f0\b\fs36 \cf0 \expnd0\expndtw0\kerning0
+;; 10>\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa120\pardirnatural
+
+\f2\b0\fs22 \cf0 \expnd0\expndtw0\kerning0
+\
+;; a)\
+\
+(define heatmap\
+  (list (rgb-new 0 0 192)\
+        (rgb-new 0 0 255)\
+        (rgb-new 0 64 255)\
+        (rgb-new 0 128 255)\
+        (rgb-new 0 192 255)\
+        (rgb-new 0 255 255)\
+        (rgb-new 64 255 192)\
+        (rgb-new 128 255 128)\
+        (rgb-new 192 255 64)\
+        (rgb-new 255 255 0)\
+        (rgb-new 255 192 0)\
+        (rgb-new 255 128 0)\
+        (rgb-new 255 64 0)\
+        (rgb-new 255 0 0)\
+        (rgb-new 192 0 0)\
+        (rgb-new 128 0 0)))\
+\
+(define rgb-brightness\
+  (lambda (color)\
+    (round (* 100 (/ (+ (* 0.30 (rgb-red color))\
+                        (* 0.59 (rgb-green color))\
+                        (* 0.11 (rgb-blue color)))\
+                     255)))\
+    )\
+  )\
+\
+;; could not figure this out... spent a long time on this... not getting same values as on webpage\
+\
+;; TIME : 70 minutes\
+\
+;; b)\
+\
+(define apply-colormap\
+  (lambda (image)\
+    (image-variant image (lambda (color) (rgb-colormap color heatmap)))\
+    )\
+  )\
+\
+;; TIME : 5 minutes\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;    END EXAM2     ;;\
+;;;;;;;;;;;;;;;;;;;;;; \
+ 
+\f3\fs24 \kerning1\expnd0\expndtw0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sl276\slmult1\sa200\pardirnatural
+
+\f0\fs22 \cf0 \expnd0\expndtw0\kerning0
+Page 1 of 11\
+\pard\tqc\tx4680\tqr\tx9340\pardeftab720\pardirnatural\qr
+
+\f4\fs28 \cf0 \expnd0\expndtw0\kerning0
+Sambit Behera\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\qc
+
+\f0\fs22 \cf0 \expnd0\expndtw0\kerning0
+1}

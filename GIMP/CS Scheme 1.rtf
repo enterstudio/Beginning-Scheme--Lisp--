@@ -1,0 +1,650 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf230
+{\fonttbl\f0\fnil\fcharset0 Calibri;\f1\fmodern\fcharset0 CourierNewPSMT;\f2\fmodern\fcharset0 CourierNewPS-BoldMT;
+\f3\fmodern\fcharset0 CourierNewPS-BoldItalicMT;\f4\fswiss\fcharset0 Helvetica;\f5\fnil\fcharset0 Cambria;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;}
+\margl1440\margr1440\margb1800\margt1800\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\li360\sa100\pardirnatural
+
+\f0\fs44 \cf0 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa100\pardirnatural\qc
+
+\b \cf0 \expnd0\expndtw0\kerning0
+Problem Set 1: Image Representations and Scheme Basics
+\f1\b0\fs24 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sl276\slmult1\sa200\pardirnatural
+
+\f2\b\fs40 \cf0 \expnd0\expndtw0\kerning0
+1\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sl276\slmult1\sa200\pardirnatural
+
+\f0\fs32 \cf0 \expnd0\expndtw0\kerning0
+Write a procedure called 
+\f2\fs28 \expnd0\expndtw0\kerning0
+image-draw-no-sign!
+\f0\fs32 \expnd0\expndtw0\kerning0
+ that generalizes the code as much as possible.
+\f2\fs36 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\
+\
+;procedure to draw a "NO" sign \
+;takes in a color, (eg "red" or "blue") as a parameter\
+;takes in width and height (eg 100 200) \
+;displays a "NO" sign of size (width X height) and color (color)\
+\
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\
+\
+(define image-draw-no-sign!\
+  (lambda (color width height)\
+    (define canvas (image-new width height))\
+    (context-set-fgcolor! color)\
+    (context-set-brush! "Circle (05)")\
+    (image-select-ellipse! canvas selection-replace 2 2 (- width 5) (- height 5))\
+    (image-stroke! canvas)\
+    (image-draw-line! canvas 0 0 width height)\
+    (image-select-nothing! canvas)\
+    (context-update-displays!)\
+    (image-show canvas)\
+    ))\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;example code to display a blue "NO" sign of dimensions 300 X 300\
+(image-draw-no-sign! "blue" 300 300)\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sl276\slmult1\sa200\pardirnatural
+
+\f2\b\fs40 \cf0 \expnd0\expndtw0\kerning0
+2\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\fs32 \cf0 \expnd0\expndtw0\kerning0
+Implement the procedure 
+\f2\fs28 \expnd0\expndtw0\kerning0
+(image-safe-select-ellipse! 
+\f3\i \expnd0\expndtw0\kerning0
+image
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+operation
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+left
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+top
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+width
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+height
+\f2\i0 \expnd0\expndtw0\kerning0
+)
+\f0\fs32 \expnd0\expndtw0\kerning0
+. This procedure should select an ellipse based on the given parameters, but should ensure that the entire ellipse falls within the boundaries of the image. That is, it should modify 
+\f3\i\fs28 \expnd0\expndtw0\kerning0
+left
+\f0\i0\fs32 \expnd0\expndtw0\kerning0
+ and 
+\f3\i\fs28 \expnd0\expndtw0\kerning0
+top
+\f0\i0\fs32 \expnd0\expndtw0\kerning0
+, if necessary, so that they fall within the boundaries of the image. The lower right corner of the selection must also fall within the image.
+\f2\fs36 \expnd0\expndtw0\kerning0
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\
+;procedure to select an ellipse within the bounds of the canvas it is drawn in\
+;takes in starting coordinates (left,top)\
+;takes in width and height of ellipse and makes it fit within the canvas if it doesnt (eg 100 200)\
+\
+\
+\
+(define image-safe-select-ellipse!\
+  (lambda (operation left top width height)\
+    \
+    ;;; bound procedure\
+    \
+    (define bound\
+      (lambda (val lower upper)\
+        (min (max val lower) upper)))\
+    \
+    \
+    (define iwidth 300)\
+    (define iheight 300)\
+\
+    (define picture (image-new iwidth iheight))  \
+    (image-show picture)\
+    \
+    \
+    (define lbound (bound left 0 (- iwidth 10)))\
+    ; this binds the beginning x-coordinate between 0 and (10 pixels from the right edge)\
+    \
+    \
+    (define tbound (bound top 0 (- iheight 10)))\
+    ; this binds the beginning y-coordinate between 0 and (10 pixels from the bottom edge)\
+    \
+    (define widthbound (bound width 5 (- iwidth lbound)))\
+    ; this binds the width between 7 and (distance between edge and starting coordinate)\
+    ; we cant have a minimum value of zero as we wont be able to see the image if the width is zero \
+    \
+    (define heightbound (bound height 5 (- iheight tbound)))\
+    ; this binds the height between 7 and (distance between edge and starting coordinate)\
+    ; we cant have a minimum value of zero as we wont be able to see the image if the height is zero\
+    \
+    (image-select-ellipse! picture operation lbound tbound widthbound heightbound)\
+    ;operation should be a valid operation like "selection-replace"\
+    \
+    (context-update-displays!)\
+    \
+    ;The dimensions of the image need to be defined somewhere so that the procedure can check if it is within bounds... \
+    ;hence, I define the image and its dimensions within the procedure\
+   \
+    \
+    \
+  ))\
+\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;example code to select an ellipse within bounds\
+\
+(image-safe-select-ellipse! selection-replace 35 -578 300 70)\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;;;;;;; this one took an insanely long time : 3.5 hours to come up with a solution \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa100\pardirnatural
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa100\pardirnatural
+
+\f0\b\fs40 \cf0 \expnd0\expndtw0\kerning0
+3. \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa100\pardirnatural
+
+\fs32 \cf0 \expnd0\expndtw0\kerning0
+The following code is intended to draw the flag of Japan, a red circle centered on a white field (see {\field{\*\fldinst{HYPERLINK "http://en.wikipedia.org/wiki/Flag_of_Japan"}}{\fldrslt \cf2 \expnd0\expndtw0\kerning0
+\ul \ulc2 Wikipedia: Flag of Japan}}). This is not actually what it does. Fix it. \
+\pard\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx8860\tx8860\tx8860\tx8860\tx8860\tx8860\tx8860\pardeftab720\pardirnatural
+
+\fs36 \cf0 \expnd0\expndtw0\kerning0
+  
+\fs28 \expnd0\expndtw0\kerning0
+(define circle (drawing-scale unit-circle 100))\
+  (drawing-recolor circle "red")\
+  (drawing-hshift circle 150)\
+  (drawing-vshift circle 100)\
+  (image-show (drawing->image rectangle 300 200))\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\fs24 \cf0 \expnd0\expndtw0\kerning0
+\
+;; fixing japanese flag\
+\
+(define fwidth 300)\
+(define fheight 200)\
+\
+(define jp-flag\
+  \
+  (drawing-recolor\
+   (drawing-vshift\
+    (drawing-hshift\
+     (drawing-vscale\
+      (drawing-hscale\
+       drawing-unit-circle\
+       (/ fheight 2))\
+      (/ fheight 2))\
+     (/ fwidth 2))\
+    (/ fheight 2))\
+   "red"))\
+  \
+(define jp-bg\
+  (drawing-recolor\
+   (drawing-vshift\
+    (drawing-hshift\
+     (drawing-vscale\
+      (drawing-hscale\
+       drawing-unit-square\
+       fwidth)\
+      fheight)\
+     (/ fwidth 2))\
+    (/ fheight 2))\
+   "white"))\
+\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+;show jp flag (with a "real" white bg (found by changing the white in jp-bg to yellow)\
+(image-show (drawing->image (drawing-group jp-bg jp-flag) fwidth fheight))\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\b\fs40 \cf0 \expnd0\expndtw0\kerning0
+4. \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\fs32 \cf0 \expnd0\expndtw0\kerning0
+Now that you've drawn the flag of Japan, consider the flag of France: three vertical stripes of equal size, colored blue, white, and red (see {\field{\*\fldinst{HYPERLINK "http://en.wikipedia.org/wiki/Flag_of_France"}}{\fldrslt \cf2 \expnd0\expndtw0\kerning0
+\ul \ulc2 Wikipedia: Flag of France}}). Write a program (that is, a sequence of expressions) that uses drawings as values to draw the flag of France. Make your code as concise as you can.
+\f2\fs36 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\
+;; the french flag\
+\
+(define fwidth 300)\
+(define fheight 200)\
+\
+(define fr\
+  \
+  (drawing-recolor\
+   (drawing-vshift\
+    (drawing-hshift\
+     (drawing-vscale\
+      (drawing-hscale\
+       drawing-unit-square\
+       (/ fwidth 3))\
+      fheight)\
+     (/ fwidth 2))\
+    (/ fheight 2))\
+   "white"))\
+\
+\
+(define fr2 \
+  (drawing-group fr\
+                 (drawing-recolor (drawing-hshift fr (/ fwidth 3)) "red")\
+                 (drawing-recolor (drawing-hshift fr (- 0 (/ fwidth 3))) "blue")))\
+  \
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;  \
+\
+;show fr flag (the white is "real" again)\
+(image-show (drawing->image fr2 fwidth fheight))\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\b\fs40 \cf0 \expnd0\expndtw0\kerning0
+5. 
+\fs32 \expnd0\expndtw0\kerning0
+\
+Write a procedure, 
+\f2\fs28 \expnd0\expndtw0\kerning0
+(image-select-isosceles-triangle! 
+\f3\i \expnd0\expndtw0\kerning0
+image
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+operation
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+left
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+top
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+width
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+height
+\f2\i0 \expnd0\expndtw0\kerning0
+)
+\f0\fs32 \expnd0\expndtw0\kerning0
+, that draws an isosceles triangle of the given width and height. Recall that an isosceles triangle has two legs of the same length.
+\f2\fs36 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\
+;; isosceles triangle\
+\
+(define image-select-isosceles-triangle!\
+  (lambda (foo operation left top width height)\
+    \
+    (image-select-polygon! foo operation\
+                           ;foo is the name of the canvas\
+                           ;operation needs to be a valid operation like "selection-replace"\
+                           \
+             (list (point-new left (+ top height)) (point-new (+ left (/ width 2)) top)\
+                   (point-new (+ left width) (+ top height)) ))\
+       \
+  ))\
+\
+  \
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;  \
+\
+;display isosceles triangle\
+\
+(define canvas (image-new 200 200))\
+\
+  \
+    (image-select-isosceles-triangle! canvas selection-replace \
+                                     10 30 80 150)\
+    (image-fill! canvas)\
+      (image-show canvas)\
+    (image-select-nothing! canvas)\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;\
+    \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\b\fs40 \cf0 \expnd0\expndtw0\kerning0
+6.\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\fs32 \cf0 \expnd0\expndtw0\kerning0
+ Implement a procedure 
+\f2\fs28 \expnd0\expndtw0\kerning0
+(list-swap-first-two 
+\f3\i \expnd0\expndtw0\kerning0
+lst
+\f2\i0 \expnd0\expndtw0\kerning0
+)
+\f0\fs32 \expnd0\expndtw0\kerning0
+ that creates a new list that interchanges the first and second items in the original list, leaving the rest of the list unchanged.
+\f2\fs36 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\
+;; swap first two elements of a list    \
+    \
+(define list-swap-first-two\
+  (lambda (lst)\
+    \
+    (cons (cadr lst) (cons (car lst) (cddr lst))))\
+    )\
+\
+;; took longer than expected (1.5 hrs)\
+;; initial plan was to make 2 list out of lst ... one with the first two elements and the other with the rest\
+;; then use reverse to reverse the first list\
+;; and finally append the second list to the first list... but did not manage to get it working this way... finally had to use cons\
+;; this approach works better when one wants to reverse a large number of elements of a large list\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;  \
+    \
+(list-swap-first-two (list 1 2 3))\
+(list-swap-first-two (list 'a 'b 'c 'd 'e))\
+\
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;    \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa100\pardirnatural
+\cf0 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa100\pardirnatural
+
+\f0\fs28 \cf0 \expnd0\expndtw0\kerning0
+Assuming 
+\i \expnd0\expndtw0\kerning0
+canvas
+\i0 \expnd0\expndtw0\kerning0
+ is defined, what effect does the following code have? \
+\pard\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx8860\tx8860\tx8860\tx8860\tx8860\tx8860\tx8860\pardeftab720\pardirnatural
+\cf0 \expnd0\expndtw0\kerning0
+  (define parallelogram-points (list (point-new 10 50) (point-new 60 50)\
+                                     (point-new 80 80) (point-new 30 80)))\
+  (image-select-polygon! canvas selection-replace parallelogram-points)\
+  (image-select-polygon! canvas selection-replace \
+                         (list-swap-first-two parallelogram-points))\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\fs24 \cf0 \expnd0\expndtw0\kerning0
+\
+\
+;; The above code has an effect of first selecting the parallelogram, and then replacing that selection with another selection which has the first two coordinates in the opposite order. This results in a shape equivalent to that of a twisted parallelogram. The new parallelogram is twisted in the plane that goes "into" the screen.\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa100\pardirnatural
+\cf0 \expnd0\expndtw0\kerning0
+;; 
+\f2\b\fs40 \expnd0\expndtw0\kerning0
+7>\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sa100\pardirnatural
+
+\f0\fs32 \cf0 \expnd0\expndtw0\kerning0
+For each of the lists defined below, write at least one expression that extracts the symbol 
+\fs24 \expnd0\expndtw0\kerning0
+eggs
+\fs32 \expnd0\expndtw0\kerning0
+. You may use any list operations that you see fit. \
+\pard\tx916\tx1832\tx2748\tx3664\tx4580\tx5496\tx6412\tx7328\tx8244\tx8860\tx8860\tx8860\tx8860\tx8860\tx8860\tx8860\pardeftab720\pardirnatural
+
+\fs24 \cf0 \expnd0\expndtw0\kerning0
+  ; Problem (a)\
+  (define super-spam-plate (list 'spam 'spam 'spam 'spam 'spam 'eggs 'spam))\
+  ; Problem (b)\
+  (define spam-plus (list (list 'spam 'eggs) (list 'toast 'spam)))\
+  ; Problem (c)\
+  (define artery-buster (list (list 'spam 'bacon) (list 'eggs) 'spam))\
+\
+  ; Problem (d)\
+  (define nested-spam (list (list (list 'eggs 'spam)))) \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0 \cf0 \expnd0\expndtw0\kerning0
+\
+\
+;;; Problem (a)\
+  (define super-spam-plate (list 'spam 'spam 'spam 'spam 'spam 'eggs 'spam))\
+  ; Solution (a)\
+  (cadr (cddddr super-spam-plate))\
+  \
+  ; Problem (b)\
+  (define spam-plus (list (list 'spam 'eggs) (list 'toast 'spam)))\
+  ; Solution (b)\
+  (cadar spam-plus)\
+  \
+  ; Problem (c)\
+  (define artery-buster (list (list 'spam 'bacon) (list 'eggs) 'spam))\
+  ; Solution (c)\
+  (caadr artery-buster)\
+  \
+  ; Problem (d)\
+  (define nested-spam (list (list (list 'eggs 'spam))))\
+  ; Solution (d)\
+  (caaar nested-spam)\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\b\fs40 \cf0 \expnd0\expndtw0\kerning0
+8.\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\fs28 \cf0 \expnd0\expndtw0\kerning0
+As you may have noticed, turtles understand angles in degrees, while Scheme's trigonometric functions assume angles are measured in radians. Implement a procedure, 
+\f2\fs24 \expnd0\expndtw0\kerning0
+degrees->radians
+\f0\fs28 \expnd0\expndtw0\kerning0
+, that takes as its parameter an angle measured in degrees and returns an equivalent angle measured in radians. Recall that 360 degrees is equivalent to 2 pi radians.
+\f2\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+  \
+;;converting from degrees to radians  \
+  \
+(define degrees->radians\
+  (lambda (degrees)\
+    \
+    (define radians (* degrees (/ pi 180)))\
+     radians\
+  ))\
+ \
+;; 
+\f2\b\fs40 \expnd0\expndtw0\kerning0
+9>\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\fs28 \cf0 \expnd0\expndtw0\kerning0
+An isosceles triangle has two sides of the same length, and therefore also two angles that are the same. Given the width of the base and the apex angle at which the two equal sides meet, we can determine the length of the two remaining sides and also the two remaining angles.
+\f2\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\
+;;a) \
+\
+(define isosceles-base-angle\
+  (lambda (apex-angle)\
+    (define base-angle (/ (- 180 apex-angle) 2))\
+    base-angle\
+    ))\
+\
+;;b)\
+\
+(define isosceles-leg-length\
+  (lambda (base-width  apex-angle)\
+    (define leg-length (/ base-width (* 2 (sin (/ (degrees->radians apex-angle) 2)))))\
+    leg-length\
+    ))\
+\
+;; 
+\f2\b\fs32 \expnd0\expndtw0\kerning0
+10>
+\f1\b0\fs24 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f0\fs22 \cf0 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\b\fs28 \cf0 \expnd0\expndtw0\kerning0
+Finally, write a procedure, 
+\f2\fs24 \expnd0\expndtw0\kerning0
+(turtle-isosceles-triangle! 
+\f3\i \expnd0\expndtw0\kerning0
+turtle
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+base-width
+\f2\i0 \expnd0\expndtw0\kerning0
+ 
+\f3\i \expnd0\expndtw0\kerning0
+apex-angle
+\f2\i0 \expnd0\expndtw0\kerning0
+)
+\f0\fs28 \expnd0\expndtw0\kerning0
+, that draws an isosceles triangle with the given base width and apex angle. As with most turtle drawing procedures, you should assume that the user has already placed the turtle where they want to start drawing.
+\f2\fs32 \expnd0\expndtw0\kerning0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f1\b0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\
+;; Isosceles Triangle turtle procedure\
+    \
+    (define turtle-isosceles-triangle!\
+      (lambda (turtle base-width apex-angle)\
+        (turtle-forward! turtle base-width)\
+        (turtle-turn! turtle (+ 180 (isosceles-base-angle apex-angle)))\
+        (turtle-forward! turtle (isosceles-leg-length base-width apex-angle))\
+        (turtle-turn! turtle (+ 180 apex-angle))\
+        (turtle-forward! turtle (isosceles-leg-length base-width apex-angle))\
+        (turtle-turn! turtle (+ 180 (isosceles-base-angle apex-angle)))\
+      \
+    ))\
+    \
+;;;;;;;;;;;;;;;;;;;;;;\
+;;      DEMO        ;;\
+;;;;;;;;;;;;;;;;;;;;;;  \
+    \
+    ;; initializing turtle\
+\
+    (define canvas (image-new 200 200))\
+    (define terry (turtle-new canvas))\
+    (image-show canvas)\
+    (turtle-teleport! terry 100 100)\
+    \
+    ;;draw sample\
+    \
+    (turtle-isosceles-triangle! terry 50 20)\
+    (turtle-isosceles-triangle! terry 50 90)\
+    (turtle-turn! terry 90)\
+    (turtle-forward! terry 20)\
+    (turtle-isosceles-triangle! terry 30 120)\
+           \
+;;;;;;;;;;;;;;;;;;;;;;\
+;;     END DEMO     ;;\
+;;;;;;;;;;;;;;;;;;;;;;  \
+    \
+;;;;;;;;;;;;;;;;;;;;;;\
+;;    END EXAM1     ;;\
+;;;;;;;;;;;;;;;;;;;;;;
+\f4 \kerning1\expnd0\expndtw0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\sl276\slmult1\sa200\pardirnatural
+
+\f0\fs22 \cf0 \expnd0\expndtw0\kerning0
+Page 1 of 11\
+\pard\tqc\tx4680\tqr\tx9340\pardeftab720\pardirnatural\qr
+
+\f5\fs28 \cf0 \expnd0\expndtw0\kerning0
+Sambit Behera\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural\qc
+
+\f0\fs22 \cf0 \expnd0\expndtw0\kerning0
+1}

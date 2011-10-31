@@ -1,0 +1,7 @@
+Hello There!
+
+This was the very first introductory CS class I took in college. It was also, in my opinion, one of the most valuable courses I took in college. All code should run fine with GIMP with the script-fu extension. 
+
+The purpose of the course was to learn how to program in Scheme (Lisp) by using the GIMP as a canvas. We used a specialized dsl (Domain Specific Language) for the programming and all our functions haven't yet been implemented by the GIMP community. Keeping this in mind, please be aware that all the code I've written under the GIMP folder will not work with the current version of GIMP. It just serves as an example of my coding abilities in Scheme.
+
+Thanks for checking out my repository!

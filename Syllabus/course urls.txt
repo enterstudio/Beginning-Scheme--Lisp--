@@ -1,0 +1,4 @@
+BOOKS
+
+http://www.scheme.com/tspl3
+http://www.htdp.org/
